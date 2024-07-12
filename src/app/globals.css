@@ -31,3 +31,30 @@ body {
     text-wrap: balance;
   }
 }
+.menu-container{
+  width: 90%;
+  height: 90%;
+  margin: 40px;
+}
+.three-container{
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 6px;
+  margin: 9px;
+  height: 400px;
+  width: 50%;
+}
+.options-container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction:row;
+  padding: 6px;
+  margin: 9px;
+}
+.options-container button{
+  margin: 0px 12px;
+  cursor:pointer;
+}

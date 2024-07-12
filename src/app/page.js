@@ -8,7 +8,8 @@ const ThreeScene = dynamic(() => import('../components/ThreeScene'), {
 const Home = () => {
 	return (
 		<div style={{ width: '100vw', height: '100vh' }}>
-			<ThreeScene />
+			<h1 style={{ textAlign: 'center', padding: '20px 0' }}>Menu</h1>
+      <ThreeScene />
 		</div>
 	);
 };
