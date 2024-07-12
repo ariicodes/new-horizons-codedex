@@ -21,60 +21,25 @@ const RotatingModel = ({ path, scale }) => {
 
 
 const ThreeScene = () => {
-	const [showHotCoffee, setShowHotCoffee]= useState(true);
-	const [showBoba, setShowBoba]= useState(false);
-	const [showIcedCoffee, setShowIcedCoffee]= useState(false);
-	const [showSpecialty, setShowSpecialty]= useState(false);
-	const [showSaladSandwich, setShowSaladSandwich]= useState(false);
-	const [showAlcohol, setShowAlcohol]= useState(false);
+	const [activeModel, setActiveModel] = useState('boba');
 
 	function bobaBtn(){
-		setShowHotCoffee(false);
-		setShowBoba(true);
-		setShowIcedCoffee(false);
-		setShowSpecialty(false);
-		setShowSaladSandwich(false);
-		setShowAlcohol(false);
+		setActiveModel('boba')
 	}
 	function hotCoffeeBtn(){
-		setShowHotCoffee(true);
-		setShowBoba(false);
-		setShowIcedCoffee(false);
-		setShowSpecialty(false);
-		setShowSaladSandwich(false);
-		setShowAlcohol(false);
+	setActiveModel('hotCoffee')
 	}
 	function icedCoffeeBtn(){
-		setShowHotCoffee(false);
-		setShowBoba(false);
-		setShowIcedCoffee(true);
-		setShowSpecialty(false);
-		setShowSaladSandwich(false);
-		setShowAlcohol(false);
+		setActiveModel('icedCoffee')
 	}
 	function specialtyBtn(){
-		setShowHotCoffee(false);
-		setShowBoba(false);
-		setShowIcedCoffee(false);
-		setShowSpecialty(true);
-		setShowSaladSandwich(false);
-		setShowAlcohol(false);
+		setActiveModel('specialty')
 	}
 	function saladSandwichBtn(){
-		setShowHotCoffee(false);
-		setShowBoba(false);
-		setShowIcedCoffee(false);
-		setShowSpecialty(false);
-		setShowSaladSandwich(true);
-		setShowAlcohol(false);
+		setActiveModel('saladSandwich')
 	}
 	function alcoholBtn(){
-		setShowHotCoffee(false);
-		setShowBoba(false);
-		setShowIcedCoffee(false);
-		setShowSpecialty(false);
-		setShowSaladSandwich(false);
-		setShowAlcohol(true);
+		setActiveModel('alcohol')
 	}
 	const hotCoffeeMenu = [
 		{'name': 'Latte', 'price': '$4.75'},
@@ -194,11 +159,60 @@ const ThreeScene = () => {
 			{'name': 'Grilled Cheese- Bacon, Tomato, and Turkey', 'price': '$7.50', 'description': 'Comes with chips'},
 	];
 
-	const alcohol =[
+	const alcohol = [
 		'Babe Rose', 'Archer Roose White/Red', 'Kona Lager', 'Blue Point', 'Juneshine', 'Lunar Hard Seltzers', 'Allagash White', 'Doc Cider', 'Stella Artois', 'Shocktop', 'Finback','Three\s Brewery'
 	]
+	
+	const menuItems = {
+	hotCoffee: hotCoffeeMenu,
+	icedCoffee: coldCoffeeMenu,
+	specialty: specialtyMenu,
+	boba: bobaItems,
+	saladSandwich: saladSandwichItems,
+	alcohol: alcohol,
+	};
+	
+	const renderMenu = () => {
+		const items = menuItems[activeModel];
+
+		if (!items) return null;
+
+		if (Array.isArray(items)) {
+			return (
+				<div className="menu-items">
+					{items.map((item, index) => (
+						<div key={index} className="menu-item">
+							<h3>{item.name || item}</h3>
+							{item.price && <h4>{item.price}</h4>}
+							{item.description && <p>{item.description}</p>}
+						</div>
+					))}
+				</div>
+			);
+		} else {
+			return (
+				<div className="menu-items">
+					{items.map((category, index) => (
+						<div key={index} className="boba-category">
+							<h3>{category.category}</h3>
+							{category.note && <p>{category.note}</p>}
+							<div className="boba-items">
+								{category.items.map((item, itemIndex) => (
+									<div key={itemIndex} className="boba-item">
+										<div>{item.name}</div>
+										<div>{item.price}</div>
+									</div>
+								))}
+							</div>
+						</div>
+					))}
+				</div>
+			);
+		}
+	};
 
 	return (
+	<>
 		<div className="menu-container">
 			<div className="options-container">
 				<button onClick={hotCoffeeBtn}>Coffee</button>
@@ -214,91 +228,20 @@ const ThreeScene = () => {
 					<ambientLight intensity={0.8} />
 					<directionalLight position={[0, 10, 0]} intensity={0.5} castShadow />
 					<OrbitControls />
-					{showBoba&& <RotatingModel path='/cup-with-lid-updated.glb' />}
-					{showIcedCoffee&& <RotatingModel path='/cup-with-lid-updated.glb' />}
-					{showHotCoffee && <RotatingModel path='/hot-coffee-updated.glb' />}
-					{showSpecialty && <RotatingModel path='/cafe_latte_with_art.glb' scale={[4,4,4]}/>}
-					{showSaladSandwich && <RotatingModel path='/bowl_with_salad.glb'scale={[0.2,0.2,0.2]}/>}
-					{showAlcohol && <RotatingModel path='/jack_daniels_-_whiskey_alcohol_-_by_smakologg.glb'scale={[0.8,0.8,0.8]}/>}
+					{activeModel == 'boba' && <RotatingModel path='/cup-with-lid-updated.glb' />}
+					{activeModel == 'icedCoffee' && <RotatingModel path='/cup-with-lid-updated.glb' />}
+					{activeModel == 'hotCoffee' && <RotatingModel path='/hot-coffee-updated.glb' />}
+					{activeModel == 'specialty' && <RotatingModel path='/cafe_latte_with_art.glb' scale={[4,4,4]}/>}
+					{activeModel == 'saladSandwich' && <RotatingModel path='/bowl_with_salad.glb'scale={[0.2,0.2,0.2]}/>}
+					{activeModel == 'alcohol' && <RotatingModel path='/jack_daniels_-_whiskey_alcohol_-_by_smakologg.glb'scale={[0.8,0.8,0.8]}/>}
 				</Canvas>
 			</div>
 			
 			<div className="menu">
-				<h2>
-					{showBoba && 'BOBA'}
-					{showIcedCoffee && 'ICED COFFEE'}
-					{showHotCoffee && 'HOT COFFEE'}
-					{showSpecialty && 'SPECIALTY DRINKS'}
-					{showSaladSandwich && 'SALADS AND SANDWICHES'}
-					{showAlcohol && 'ALCOHOL'}
-				</h2>
-				{showHotCoffee && (
-				<div className="menu-items">
-					{hotCoffeeMenu.map((coffee, index) => (
-						<div key={index} className="menu-item">
-							<h3>{coffee.name}</h3>
-							<h4>{coffee.price}</h4>
-						</div>
-					))}
-				</div>)}
-				{showIcedCoffee && (
-				<div className="menu-items">
-					{coldCoffeeMenu.map((coffee, index) => (
-						<div key={index} className="menu-item">
-							<h3>{coffee.name}</h3>
-							<h4>{coffee.price}</h4>
-						</div>
-					))}
-				</div>)}
-				{showSpecialty && (
-				<div className="menu-items">
-					{specialtyMenu.map((drink, index) => (
-						<div key={index} className="menu-item">
-							<h3>{drink.name}</h3>
-							<h4>{drink.price}</h4>
-						</div>
-
-					))}
-				</div>)}
-				{showBoba && (
-				<div className="menu-items">
-					{bobaItems.map((category, index) => (
-					<div key={index} className="boba-category">
-					<h3>{category.category}</h3>
-					<p>{category.note}</p>
-					<div className="boba-items">
-						{category.items.map((item, itemIndex) => (
-						<div key={itemIndex} className="boba-item">
-							<div>{item.name}</div>
-							<div>{item.price}</div>
-						</div>
-						))}
-					</div>
-					</div>
-				))}
-				</div>)}
-				{showSaladSandwich && (
-				<div className="menu-items">
-					{saladSandwichItems.map((entree, index) => (
-						<div key={index} className="menu-item">
-							<h3>{entree.name}</h3>
-							<h4>{entree.price}</h4>
-							<h5>{entree.description}</h5>
-						</div>
-
-					))}
-				</div>)}
-				{showAlcohol && (
-				<div className="menu-items">
-					{alcohol.map((item, index) => (
-						<div key={index} className="menu-item">
-							<h3>{item}</h3>
-						</div>
-					))}
-					<p>Rotating Menu of beers from local breweries! (tall silver cans on our counter)</p>
-				</div>)}
-			</div>
-		</div>
+			  <h2>{activeModel.toUpperCase()}</h2>
+			{renderMenu()}
+		 </div>
+			</>
 	);
 };
 
